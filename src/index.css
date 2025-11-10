@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap');
+@import "tailwindcss";
+*{
+  font-family: poppins;
+}
+
+.Gilda{
+  font-family: 'Gilda Display', serif;
+}
+.poppins{
+  font-family: 'Poppins', sans-serif;
+}
