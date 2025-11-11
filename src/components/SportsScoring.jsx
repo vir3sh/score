@@ -440,6 +440,8 @@ function TeamAvatar({ tag }) {
   );
 }
 
+
+
 function Teams() {
   return (
     <section id="teams" className="mx-auto mt-10 max-w-7xl px-4 text-white">
