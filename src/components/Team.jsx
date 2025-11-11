@@ -1,5 +1,6 @@
 // src/components/Teams.jsx
 import React, { useEffect, useRef, useState } from "react";
+import { FaUsers } from "react-icons/fa";
 
 /* -------------------------
    Sample teams (unique names)
@@ -254,6 +255,28 @@ function TeamCard({ team, onView }) {
         </div>
         <div className="text-xs text-white/60">{team.sport}</div>
       </div>
+
+      {/* Mobile-only hint pill */}
+      <div className="ml-auto flex items-center gap-2 sm:hidden">
+        {/* <span className="rounded-[7px] bg-white/6 px-3 py-1 text-xs font-medium text-white/90">
+          View
+        </span> */}
+        <svg
+          className="h-4 w-4 text-white/70"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            d="M9 18l6-6-6-6"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+
+      {/* Desktop "View" label (hidden on mobile) */}
       <div className="ml-auto hidden items-center gap-2 sm:flex text-white/60">
         <span className="text-xs">View</span>
         <svg
@@ -300,20 +323,40 @@ export default function Teams() {
   }
 
   return (
-    <section id="teams" className="mx-auto mt-10 max-w-7xl px-4 text-white">
-      <div className="flex items-end justify-between">
-        <h2 className="text-xl font-bold md:text-3xl">Teams</h2>
+    <section id="teams" className="mx-auto mt-12 max-w-7xl px-4 text-white">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <h2 className="text-2xl font-bold md:text-3xl tracking-tight">
+          Our Teams
+        </h2>
+        {/* Desktop hint */}
+        <div className="hidden sm:flex items-center gap-2 text-white/70 text-sm">
+          <FaUsers className="text-emerald-400 text-base" />
+          <span>Tap any card to view lineup</span>
+        </div>
       </div>
 
-      {/* Grid: mobile 1 col, sm:2, lg:4 */}
-      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Mobile hint */}
+      <div className="mt-3 sm:hidden flex justify-center">
+        <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full text-sm text-white/80 shadow-sm backdrop-blur-sm">
+          <FaUsers className="text-emerald-400 text-lg" />
+          <span>View players</span>
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {teams.map((t) => (
-          <div key={t.tag}>
+          <div
+            key={t.tag}
+            className="transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          >
             <TeamCard team={t} onView={openTeam} />
           </div>
         ))}
       </div>
 
+      {/* Modal */}
       <TeamModal open={modalOpen} onClose={closeModal} team={activeTeam} />
     </section>
   );

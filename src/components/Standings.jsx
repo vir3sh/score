@@ -22,19 +22,52 @@ function Standings() {
           key: "epl",
           name: "Premier League",
           teams: [
-            { name: "Arsenal", pts: 82 },
-            { name: "Man City", pts: 90 },
-            { name: "Liverpool", pts: 78 },
-            { name: "Chelsea", pts: 65 },
+            { name: "Manchester City", pts: 90 },
+            { name: "Arsenal", pts: 88 },
+            { name: "Liverpool", pts: 82 },
+            { name: "Aston Villa", pts: 68 },
+            { name: "Tottenham Hotspur", pts: 66 },
+            { name: "Chelsea", pts: 63 },
+            { name: "Newcastle United", pts: 61 },
+            { name: "Manchester United", pts: 60 },
+            { name: "West Ham United", pts: 55 },
+            { name: "Brighton & Hove Albion", pts: 52 },
+            { name: "Crystal Palace", pts: 49 },
+            { name: "Fulham", pts: 47 },
+            { name: "Brentford", pts: 46 },
+            { name: "Wolverhampton Wanderers", pts: 44 },
+            { name: "Nottingham Forest", pts: 40 },
+            { name: "Everton", pts: 38 },
+            { name: "Luton Town", pts: 35 },
+            { name: "Burnley", pts: 32 },
+            { name: "Sheffield United", pts: 30 },
+            { name: "Bournemouth", pts: 29 },
           ],
         },
         {
           key: "la",
           name: "La Liga",
           teams: [
-            { name: "Real Madrid", pts: 88 },
-            { name: "Barcelona", pts: 84 },
-            { name: "Atletico", pts: 70 },
+            { name: "Real Madrid", pts: 90 },
+            { name: "Barcelona", pts: 85 },
+            { name: "Girona", pts: 78 },
+            { name: "Atletico Madrid", pts: 75 },
+            { name: "Athletic Bilbao", pts: 68 },
+            { name: "Real Sociedad", pts: 64 },
+            { name: "Real Betis", pts: 60 },
+            { name: "Valencia", pts: 58 },
+            { name: "Villarreal", pts: 56 },
+            { name: "Osasuna", pts: 52 },
+            { name: "Rayo Vallecano", pts: 48 },
+            { name: "Celta Vigo", pts: 46 },
+            { name: "Las Palmas", pts: 45 },
+            { name: "Getafe", pts: 43 },
+            { name: "Mallorca", pts: 41 },
+            { name: "Alaves", pts: 38 },
+            { name: "Cadiz", pts: 36 },
+            { name: "Granada", pts: 33 },
+            { name: "Sevilla", pts: 32 },
+            { name: "Almeria", pts: 28 },
           ],
         },
       ],
@@ -46,10 +79,16 @@ function Standings() {
           key: "ipl",
           name: "Indian Premier League",
           teams: [
-            { name: "CSK", pts: 16 },
-            { name: "MI", pts: 14 },
-            { name: "RCB", pts: 12 },
-            { name: "KKR", pts: 10 },
+            { name: "Chennai Super Kings", pts: 20 },
+            { name: "Mumbai Indians", pts: 18 },
+            { name: "Kolkata Knight Riders", pts: 17 },
+            { name: "Royal Challengers Bengaluru", pts: 16 },
+            { name: "Rajasthan Royals", pts: 15 },
+            { name: "Delhi Capitals", pts: 14 },
+            { name: "Sunrisers Hyderabad", pts: 13 },
+            { name: "Lucknow Super Giants", pts: 12 },
+            { name: "Gujarat Titans", pts: 11 },
+            { name: "Punjab Kings", pts: 10 },
           ],
         },
       ],
@@ -57,7 +96,7 @@ function Standings() {
   ];
   // ----------------------------------------------------------
 
-  // Safe state initializers (won't throw if `sports` is empty/undefined)
+  // Safe state initializers
   const [selectedSport, setSelectedSport] = useState(sports?.[0]?.name ?? "");
   const [selectedLeague, setSelectedLeague] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -70,7 +109,11 @@ function Standings() {
     : null;
   const teams = leagueData?.teams ?? [];
 
-  // If no sports present, render a helpful message
+  // NEW: total teams for selected sport (sum across leagues)
+  const totalTeams =
+    sportData?.leagues?.reduce((acc, l) => acc + (l.teams?.length ?? 0), 0) ??
+    0;
+
   if (!sports || sports.length === 0) {
     return (
       <section className="mx-auto mt-8 max-w-7xl px-4 text-white">
@@ -86,7 +129,21 @@ function Standings() {
     <section id="standings" className="mx-auto mt-8 max-w-7xl px-4 text-white">
       {/* Header */}
       <div className="flex items-end justify-between">
-        <h2 className="text-xl font-bold md:text-2xl">Standings</h2>
+        <div>
+          <h2 className="text-xl font-bold md:text-2xl">Standings</h2>
+          {/* NEW: display total teams for selected sport */}
+          <p className="mt-1 text-sm text-white/70">
+            {selectedSport ? (
+              <>
+                <span className="font-medium">{selectedSport}</span> —{" "}
+                <span>{totalTeams} teams</span>
+              </>
+            ) : (
+              "Select a sport"
+            )}
+          </p>
+        </div>
+
         <div className="flex gap-2">
           {sports.map((s) => (
             <button
@@ -166,17 +223,18 @@ function Standings() {
         ))}
       </div>
 
-      {/* Modal / Bottom sheet */}
+      {/* Modal / Centered dialog */}
       {showModal && leagueData && (
         <div
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black bg-opacity-60 px-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 px-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
         >
+          {/* Centered card */}
           <div
-            className="w-full sm:w-full md:max-w-2xl sm:rounded-t-2xl sm:rounded-b-none rounded-t-2xl border border-white/10 bg-gradient-to-b from-slate-900 to-slate-950 p-4 sm:p-6 shadow-lg
-                          max-h-[92vh] sm:max-h-[80vh] overflow-hidden"
+            className="w-full max-w-2xl rounded-2xl border border-white/10 bg-gradient-to-b from-slate-900 to-slate-950 p-4 sm:p-6 shadow-lg
+                        max-h-[92vh] overflow-hidden"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
@@ -205,7 +263,7 @@ function Standings() {
               </button>
             </div>
 
-            <div className="overflow-y-auto max-h-[64vh] sm:max-h-[56vh] pr-2">
+            <div className="overflow-y-auto max-h-[64vh] pr-2">
               <ol className="space-y-3 text-sm">
                 {teams
                   .slice()
