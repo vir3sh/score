@@ -2,6 +2,8 @@ import React, { useMemo, useState } from "react";
 import { FaFutbol, FaBasketballBall } from "react-icons/fa";
 import { GiCricketBat, GiTennisRacket } from "react-icons/gi";
 import cricketHero from "./assets/cricket-hero.jpg";
+import Teams from "./components/Team";
+import Standings from "./components/Standings";
 /**
  * Sports Scoring Website – Single-file React component
  * - TailwindCSS utility classes
@@ -314,48 +316,6 @@ function LiveTicker() {
   );
 }
 
-function Leagues() {
-  const ICON_CLASS = "text-teal-400"; // same color for all icons
-  return (
-    <section id="leagues" className="mx-auto mt-16 max-w-7xl px-4 text-white">
-      <div className="flex items-end justify-between">
-        <h2 className="text-2xl font-bold md:text-3xl">Leagues</h2>
-        <a href="#" className="text-sm text-emerald-400 hover:underline">
-          Browse all
-        </a>
-      </div>
-      <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {leagues.map((l) => (
-          <article
-            key={l.key}
-            className="group rounded-2xl border border-white/10 bg-gradient-to-b from-slate-900 to-slate-950 p-5 shadow-lg transition hover:border-emerald-500/30"
-          >
-            <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-xl">
-                {l.Icon ? <l.Icon className={ICON_CLASS} /> : null}
-              </div>
-              <div>
-                <h3 className="font-semibold">{l.name}</h3>
-                <p className="text-xs text-white/70">
-                  {l.comps.length} competitions
-                </p>
-              </div>
-            </div>
-            <ul className="mt-4 space-y-1 text-sm text-white/70">
-              {l.comps.map((c) => (
-                <li key={c}>• {c}</li>
-              ))}
-            </ul>
-            <button className="mt-4 w-full rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-700">
-              View standings
-            </button>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function TeamAvatar({ tag }) {
   const bg = useMemo(() => {
     const shades = [
@@ -382,38 +342,40 @@ function TeamAvatar({ tag }) {
   );
 }
 
-function Teams() {
-  return (
-    <section id="teams" className="mx-auto mt-16 max-w-7xl px-4 text-white">
-      <h2 className="text-2xl font-bold md:text-3xl Gilda">Teams</h2>
-      <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {teams.map((t) => (
-          <div
-            key={t.tag}
-            className="flex items-center gap-4 rounded-2xl border border-white/10 bg-slate-900 p-4 shadow"
-          >
-            <TeamAvatar tag={t.tag} />
-            <div>
-              <div className="font-semibold">{t.name}</div>
-              <div className="text-xs text-white/60">{t.sport}</div>
-            </div>
-            <div className="ml-auto">
-              <button className="rounded-lg bg-white/10 px-3 py-1.5 text-xs hover:bg-white/20">
-                View
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
+// function Teams() {
+//   return (
+//     <section id="teams" className="mx-auto mt-16 max-w-7xl px-4 text-white">
+//       <h2 className="text-2xl font-bold md:text-3xl Gilda">Teams</h2>
+//       <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+//         {teams.map((t) => (
+//           <div
+//             key={t.tag}
+//             className="flex items-center gap-4 rounded-2xl border border-white/10 bg-slate-900 p-4 shadow"
+//           >
+//             <TeamAvatar tag={t.tag} />
+//             <div>
+//               <div className="font-semibold">{t.name}</div>
+//               <div className="text-xs text-white/60">{t.sport}</div>
+//             </div>
+//             <div className="ml-auto">
+//               <button className="rounded-lg bg-white/10 px-3 py-1.5 text-xs hover:bg-white/20">
+//                 View
+//               </button>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </section>
+//   );
+// }
 
 function CricketGallery() {
   return (
     <section className="mx-auto mt-16 max-w-7xl px-4 text-white">
       <div className="flex items-end justify-between">
-        <h2 className="text-2xl font-bold md:text-3xl Gilda">Cricket Gallery</h2>
+        <h2 className="text-2xl font-bold md:text-3xl Gilda">
+          Cricket Gallery
+        </h2>
         {/* <span className="text-xs text-white/60">
           Images discovered via Google (Unsplash sources)
         </span> */}
@@ -554,7 +516,8 @@ export default function SportsScoringWebsite() {
       {header === "A" ? <HeaderA /> : <HeaderB />}
       <Hero />
       <LiveTicker />
-      <Leagues />
+      {/* <Leagues /> */}
+      <Standings />
       <CricketGallery />
       <Teams />
       <CTA />
